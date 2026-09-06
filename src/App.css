@@ -1,0 +1,169 @@
+/* ---------- base layout ---------- */
+.app {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #ffffff;
+  color: #222222;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.app.dark {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+/* ---------- header ---------- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mode-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+}
+
+.mode-btn:hover {
+  opacity: 0.85;
+}
+
+/* ---------- search bar ---------- */
+.search-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 8px 12px;
+  margin: 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.app.dark .search-input {
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+
+/* ---------- genre buttons ---------- */
+.genre-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.genre-btn {
+  padding: 8px 14px;
+  border: 1px solid #999;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.genre-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.genre-btn.active {
+  background-color: #e63946;
+  color: #fff;
+  border-color: #e63946;
+}
+
+.app.dark .genre-btn {
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+  border: 1px solid #555;
+}
+
+/* ---------- sort buttons ---------- */
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.sort-btn {
+  padding: 6px 12px;
+  border: 1px solid #999;
+  border-radius: 16px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.sort-btn.active {
+  background-color: #457b9d;
+  color: #fff;
+  border-color: #457b9d;
+}
+
+.app.dark .sort-btn {
+  background-color: #2a2a2a;
+  color: #f1f1f1;
+  border: 1px solid #555;
+}
+
+/* ---------- movie grid ---------- */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.movie-card {
+  position: relative;
+  background-color: #fafafa;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-4px);
+}
+
+.app.dark .movie-card {
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+}
+
+.movie-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* favorite heart button sits on top-right of the card */
+.fav-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ---------- no results message ---------- */
+.no-results {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 18px;
+  color: #888;
+}
