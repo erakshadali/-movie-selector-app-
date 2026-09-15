@@ -1,7 +1,5 @@
-import { useState } from "react";
-import "./App.css";
+// src/Movies.js
 
-//All Movies
 const allMovies = [
   {
     title: "Damaged",
@@ -49,7 +47,7 @@ const allMovies = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSflgboSqGZRS6nQUnj30i9LjgTR_UIGP3G5Ys4wl7FSA&s=10",
   },
   {
-    title: "mufasa",
+    title: "Mufasa",
     genre: ["kids", "action"],
     rating: 6.6,
     age: 10,
@@ -98,7 +96,7 @@ const allMovies = [
     genre: ["action", "kids"],
     rating: 8.6,
     age: 19,
-    about: "Young  becomes the future king",
+    about: "A genius billionaire becomes an armored hero",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgqZ684DxG_02V5SScyutuI-_fAC_nGdZIsQqUA0Lpug&s=10",
   },
@@ -130,7 +128,7 @@ const allMovies = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl9P7YEzGm8QO2yEUVQpogmVkgsEL-v__awWRAK0-v5Q&s=10",
   },
   {
-    title: "weapons",
+    title: "Weapons",
     genre: ["horror", "action", "scifi"],
     rating: 8.6,
     age: 7,
@@ -138,161 +136,16 @@ const allMovies = [
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJ5sTqTbx5AestViWaoERWs7diHPWSfdsjoF93EzTZAQ&s",
   },
+  {
+    title: "Jhon wick",
+    genre: ["action", "scifi"],
+    rating: 9.5,
+    age: 18,
+    about:
+      "A man which killed 3 people with fucking a pencil its name is baba yaga",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH5Mq4mMOZwN7iOF2H5D0RMy6JO36YXXzdZWrBLQSPvg&s=10",
+  },
 ];
 
-// Small reusable component for a single movie card
-// (keeping it in the same file, simple to follow)
-function MovieCard({ movie, isFavorite, onToggleFavorite }) {
-  return (
-    <div className="movie-card">
-      <img src={movie.image} alt={movie.title} className="movie-image" />
-      <button className="fav-btn" onClick={() => onToggleFavorite(movie.title)}>
-        {isFavorite ? "❤️" : "🤍"}
-      </button>
-      <h4>{movie.title}</h4>
-      <p>Rating: {movie.rating}</p>
-      <p>{movie.genre.join(", ")}</p>
-    </div>
-  );
-}
-
-export default function MovieSelectorApp() {
-  // dark mode
-  const [isDark, setIsDark] = useState(false);
-
-  // genre filter
-  const [selectedGenre, setSelectedGenre] = useState("all");
-  const [moviesToShow, setMoviesToShow] = useState(allMovies);
-
-  // search box text
-  const [searchTerm, setSearchTerm] = useState("");
-
-  // sort order: "none" | "high" | "low"
-  const [sortOrder, setSortOrder] = useState("none");
-
-  // favorites list, loaded from localStorage so it stays saved on refresh
-  const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem("favMovies");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  // set genre on click (cleaned up, one function instead of 3 repeated blocks)
-  function handleGenreClick(genre) {
-    setSelectedGenre(genre);
-
-    let filteredMovies = allMovies;
-
-    if (genre === "kids") {
-      filteredMovies = allMovies.filter(
-        (movie) => movie.genre.includes(genre) && movie.age <= 18,
-      );
-    } else if (genre === "adult") {
-      filteredMovies = allMovies.filter(
-        (movie) => movie.genre.includes(genre) || movie.age >= 18,
-      );
-    } else if (genre !== "all") {
-      filteredMovies = allMovies.filter((movie) => movie.genre.includes(genre));
-    }
-
-    setMoviesToShow(filteredMovies);
-  }
-
-  // add or remove a movie from favorites, and save to localStorage
-  function toggleFavorite(title) {
-    const updatedFavorites = favorites.includes(title)
-      ? favorites.filter((t) => t !== title)
-      : [...favorites, title];
-
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favMovies", JSON.stringify(updatedFavorites));
-  }
-
-  // apply search on top of the genre-filtered list
-  let finalMovies = moviesToShow.filter((movie) =>
-    movie.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
-
-  // apply sorting on top of that
-  if (sortOrder === "high") {
-    finalMovies = [...finalMovies].sort((a, b) => b.rating - a.rating);
-  } else if (sortOrder === "low") {
-    finalMovies = [...finalMovies].sort((a, b) => a.rating - b.rating);
-  }
-
-  return (
-    <div className={isDark ? "app dark" : "app"}>
-      {/* header title left button */}
-      <div className="header">
-        <h1>Movie Selector</h1>
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search movies..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button className="mode-btn" onClick={() => setIsDark(!isDark)}>
-          {isDark ? "Light Mode" : "Dark Mode"}
-        </button>
-      </div>
-
-      <hr />
-
-      {/* search bar */}
-
-      {/* genre buttons */}
-      <div className="genre-bar">
-        {["all", "horror", "kids", "action", "scifi", "adult"].map((genre) => (
-          <button
-            key={genre}
-            className={
-              selectedGenre === genre ? "genre-btn active" : "genre-btn"
-            }
-            onClick={() => handleGenreClick(genre)}
-          >
-            {genre === "all" ? "All" : genre[0].toUpperCase() + genre.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      {/* sort buttons */}
-      <div className="sort-bar">
-        <span>Sort by rating: </span>
-        <button
-          className={sortOrder === "high" ? "sort-btn active" : "sort-btn"}
-          onClick={() => setSortOrder("high")}
-        >
-          High to Low
-        </button>
-        <button
-          className={sortOrder === "low" ? "sort-btn active" : "sort-btn"}
-          onClick={() => setSortOrder("low")}
-        >
-          Low to High
-        </button>
-        <button
-          className={sortOrder === "none" ? "sort-btn active" : "sort-btn"}
-          onClick={() => setSortOrder("none")}
-        >
-          Reset
-        </button>
-      </div>
-
-      {/* movies card filter list */}
-      {finalMovies.length === 0 ? (
-        <p className="no-results">No movies found 😕</p>
-      ) : (
-        <div className="movie-grid">
-          {finalMovies.map((movie) => (
-            <MovieCard
-              key={movie.title}
-              movie={movie}
-              isFavorite={favorites.includes(movie.title)}
-              onToggleFavorite={toggleFavorite}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
+export default allMovies;
